@@ -1,0 +1,466 @@
+
+{
+    "version": 8,
+    "name": "Mapbox Streets",
+    "metadata": {
+        "mapbox:autocomposite": true
+    },
+    "sources": {
+        "composite": {
+            "url": "mapbox://nicki.6sslye0q",
+            "type": "vector"
+        },
+        "mapbox": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/nicki/ciq47bi09000vb4kx1l6lfl9v",
+    "glyphs": "mapbox://fonts/nicki/{fontstack}/{range}.pbf",
+    "lighting-anchor": "map",
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "background-color": "hsl(50, 0%, 100%)"
+            },
+            "interactive": true
+        },  
+         {
+      "id": "national_park",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "landuse_overlay",
+      "filter": [
+        "==",
+        "class",
+        "national_park"
+      ],
+      "layout": {},
+      "paint": {
+        "fill-color": "hsl(180, 30%, 30%)",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              0.5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "park",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "landuse",
+      "filter": [
+        "in",
+        "class",
+        "park",
+        "cemetery"
+      ],
+      "layout": {
+        "visibility": "none"
+        },
+      "paint": {
+        "fill-pattern": "crosshatch-light-16-flipped"
+      }
+    },
+    {
+      "id": "park-line",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "landuse",
+      "filter": [
+        "in",
+        "class",
+        "park",
+        "cemetery"
+      ],
+      "layout": {
+        "visibility": "none"
+        },
+      "paint": {
+        "line-color": "#000",
+        "line-width": 0.5,
+        "line-dasharray": [6,2,8,3]
+      }
+    },
+    {
+      "id": "industrial",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        "class",
+        "industrial"
+      ],
+      "layout": {},
+      "paint": {
+        "fill-color": "hsl(215, 40%, 35%)"
+      }
+    },
+    {
+      "id": "sand",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        "class",
+        "sand"
+      ],
+      "layout": {},
+      "paint": {
+        "fill-color": "hsl(215, 30%, 45%)"
+      }
+    }, 
+    {
+      "id": "water-shadow",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "water",
+      "layout": {},
+      "paint": {
+        "fill-color": "hsl(0, 0%, 0%)",
+        "fill-translate": {
+          "base": 1.2,
+          "stops": [
+            [
+              7,
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              16,
+              [
+                -1,
+                -1
+              ]
+            ]
+          ]
+        },
+        "fill-translate-anchor": "viewport",
+        "fill-opacity": 1
+      }
+    },  
+    {
+      "id": "water-bg",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "water",
+      "layout": {
+        "visibility":"visible"
+        },
+      "paint": {
+        "fill-color": "hsl(50, 80%, 80%)"
+      }
+    },
+    {
+      "id": "water-line",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "water",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "hsl(250, 0%, 0%)",
+        "line-offset": 0,
+        "line-opacity": 1,
+        "line-width": 0.5
+      }
+    },
+    {
+      "id": "water-line-2",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "water",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "none"
+      },
+      "paint": {
+        "line-color": "hsl(180, 50%, 90%)",
+        "line-offset": 10,
+        "line-opacity": 0.5,
+        "line-width": 10
+      }
+    },
+    {
+      "id": "road",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "road",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "visible"
+        },
+      "paint": {
+        "line-color": "hsl(0, 0%, 70%)"
+      }
+    },
+    {
+      "id": "building-line",
+      "type": "line",
+      "source": "composite",
+      "source-layer": "building",
+      "minzoom": 15,
+      "filter": [
+        "==",
+        "underground",
+        "false"
+      ],
+      "layout": {
+        "visibility": "none"
+        },
+      "paint": {
+        "line-color": "rgb(0.8, 0.1, 0.0)",
+        "line-width": {
+          "base": 1.5,
+          "stops": [
+            [
+              15,
+              0.75
+            ],
+            [
+              20,
+              1
+            ]
+          ]
+        },
+        "line-opacity": {
+          "base": 1,
+          "stops": [
+            [
+              15.5,
+              0
+            ],
+            [
+              16,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "building-footprint",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "building",
+      "minzoom": 15,
+      "filter": [
+            "all",
+            [
+                "==",
+                "underground",
+                "false"
+            ],[
+                "==",
+                "extrude",
+                "true"
+            ]
+        ],
+      "layout": {
+        "visibility": "none"
+        },
+      "paint": {
+        "fill-color": "rgb(0.0, 0.0, 0.0)",
+        "fill-translate": {
+          "base": 1.2,
+          "stops": [
+            [
+              15,
+              [
+                -1,
+                1
+              ]
+            ],
+            [
+              18,
+              [
+                -1,
+                1
+              ]
+            ]
+          ]
+        },
+        "fill-translate-anchor": "viewport"
+      }
+    },
+    {
+      "id": "building-footprint-2",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "building",
+      "minzoom": 15,
+      "filter": [
+            "all",
+            [
+                "==",
+                "underground",
+                "false"
+            ],[
+                "==",
+                "extrude",
+                "true"
+            ]
+        ],
+      "layout": {
+        "visibility": "none"
+        },
+      "paint": {
+        "fill-color": "rgb(0.0, 0.0, 0.0)",
+        "fill-translate": {
+          "base": 1.2,
+          "stops": [
+            [
+              15,
+              [
+                1,
+                1
+              ]
+            ],
+            [
+              18,
+              [
+                1,
+                1
+              ]
+            ]
+          ]
+        },
+        "fill-translate-anchor": "viewport"
+      }
+    },
+    {
+          "layout": {
+            "visibility": "visible"
+          },
+          "type": "extrusion",
+          "source": "composite",
+          "id": "buildingtada",
+          "paint": {
+            "extrusion-color": "rgb(255, 100, 100)",
+            "extrusion-opacity": 1.0,
+            "extrusion-layer-opacity": 1.0,
+            "extrusion-antialias": false,
+            "extrusion-outline-color": "#000",
+            "extrusion-shadow-color": "hsl(200, 100%, 10%)",
+            "extrusion-height": {
+              "stops": [[0, 0], [1000, 1000]],
+              "property": "height"
+            },
+            "extrusion-min-height": {
+              "stops": [[0, 0], [1000, 1000]],
+              "property": "min_height"
+            }
+          },
+          "source-layer": "building",
+          "filter": [
+            "all",
+            [
+                "==",
+                "underground",
+                "false"
+            ],[
+                "==",
+                "extrude",
+                "true"
+            ]
+        ],
+          "interactive": true
+        },
+        {
+      "id": "poi",
+      "type": "symbol",
+      "metadata": {
+        "mapbox:group": "1444933322393.2852"
+      },
+      "source": "composite",
+      "source-layer": "poi_label",
+      "filter": [
+        "all",
+        [
+          "!in",
+          "maki",
+          "campsite",
+          "cemetery",
+          "dog-park",
+          "garden",
+          "golf",
+          "park",
+          "picnic-site",
+          "playground",
+          "zoo"
+        ],
+        [
+          "<=",
+          "scalerank",
+          4
+        ],
+        [
+          "in",
+          "name",
+          "Independence Hall"
+        ]
+      ],
+      "layout": {
+        "text-line-height": 1.1,
+        "text-size": {
+          "base": 1,
+          "stops": [
+            [
+              15,
+              21
+            ],
+            [
+              18,
+              21
+            ]
+          ]
+        },
+        "text-max-angle": 38,
+        "symbol-spacing": 250,
+        "text-font": [
+          "Silentium Pro Roman I",
+          "Arial Unicode MS Regular"
+        ],
+        "text-padding": 2,
+        "text-anchor": "top",
+        "text-offset": [
+          1.5,
+          -2.25
+        ],
+        "text-rotation-alignment": "viewport",
+        "text-field": "{name_en}",
+        "text-line-height": 0.8,
+        "text-letter-spacing": 0.01,
+        "text-max-width": 4
+      },
+      "paint": {
+        "text-color": "#000",
+        "text-halo-color": "hsl(0, 0%, 0%)",
+        "text-halo-width": 0.1,
+        "text-halo-blur": 0
+      }
+    }
+    ]
+}

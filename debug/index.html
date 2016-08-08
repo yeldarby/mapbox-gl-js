@@ -9,6 +9,7 @@
     <style>
         body { margin: 0; padding: 0; }
         html, body, #map { height: 100%; }
+        /* #map { height: 324px; width: 576px; } */
         #checkboxes {
             position: absolute;
             background: #fff;
@@ -38,12 +39,14 @@
 
 <body>
 <div id='map'></div>
+<!--
 <div id='checkboxes'>
   <input id='show-tile-boundaries-checkbox' name='show-tile-boundaries' type='checkbox'> <label for='show-tile-boundaries'>tile debug</label><br />
   <input id='show-symbol-collision-boxes-checkbox' name='show-symbol-collision-boxes' type='checkbox'> <label for='show-symbol-collision-boxes'>collision debug</label><br />
   <input id='show-overdraw-checkbox' name='show-overdraw' type='checkbox'> <label for='show-overdraw'>overdraw debug</label><br />
   <input id='buffer-checkbox' name='buffer' type='checkbox'> <label for='buffer'>buffer stats</label>
 </div>
+-->
 
 <div id='buffer' style="display:none">
     <em>Waiting for data...</em>
@@ -56,13 +59,20 @@
 var map = window.map = new mapboxgl.Map({
     container: 'map',
     zoom: 15.9,
-    // center: [2.34485,48.85640],
-    center: [-73.97313,40.76261],
+    //center: [2.34485,48.85640], //Paris
+    //center: [-73.97313,40.76261], //NYC
+    //center: [114.175635,22.279301], //HK
+    center: [-75.1539,39.9513], //Philly
+    //center: [-71.0597,42.3556], //Boston
+    //center: [-117.9,33.8], //Disneyland
+    //center: [13.35,52.5], //Berlin
+    //center: [-118.2,34.0], //LA
     pitch: 80,
-    bearing: 180,
-    style: 'mapbox-streets-v8.json',
+    bearing: 0,
+    style: 'philly-testing.json',
     // style: 'paris.json',
-    hash: true
+    hash: true,
+    attributionControl: false
 });
 
 map.addControl(new mapboxgl.Navigation());

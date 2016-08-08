@@ -7,7 +7,7 @@
     },
     "sources": {
         "composite": {
-            "url": "mapbox://nicki.7s61dkb1",
+            "url": "mapbox://nicki.5sidtz44",
             "type": "vector"
         },
         "mapbox": {
@@ -17,6 +17,7 @@
     },
     "sprite": "mapbox://sprites/mapbox/streets-v8",
     "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "extrusion-lighting-anchor": "viewport",
     "layers": [
         {
             "id": "background",
@@ -25,7 +26,8 @@
                 "visibility": "visible"
             },
             "paint": {
-                "background-color": "hsl(200, 12%, 89%)"
+                "background-color": "hsl(200, 12%, 89%)",
+                "background-opacity": 1
             },
             "interactive": true
         },  
@@ -305,7 +307,7 @@
         "visibility": "none"
         },
       "paint": {
-        "line-color": "hsl(230, 24%, 87%)",
+        "line-color": "#f00",
         "line-width": {
           "base": 1.5,
           "stops": [
@@ -315,7 +317,7 @@
             ],
             [
               20,
-              3
+              1.5
             ]
           ]
         },
@@ -6534,7 +6536,7 @@
         }
       }
     },
-            {
+    {
           "layout": {
             "visibility": "visible"
           },
@@ -6542,12 +6544,12 @@
           "source": "composite",
           "id": "buildingtada",
           "paint": {
-            "extrusion-color": "hsl(35, 8%, 95%)",
+            "extrusion-color": "hsl(80, 3%, 75%)",
             "extrusion-antialias": false,
-            "extrusion-lighting-anchor": "viewport",
-            "extrusion-outline-color": "#909",
-            "extrusion-opacity": 0.9,
-            "extrusion-shadow-color": "#f00",
+            "extrusion-outline-color": "#fff",
+            "extrusion-opacity": 1,
+            "extrusion-layer-opacity": 1,
+            "extrusion-shadow-color": "#00f",
             "extrusion-height": {
               "stops": [[0, 0], [1000, 1000]],
               "property": "height"
@@ -6559,9 +6561,16 @@
           },
           "source-layer": "building",
           "filter": [
-            "==",
-            "underground",
-            "false"
+            "all",
+            [
+                "==",
+                "underground",
+                "false"
+            ],[
+                "==",
+                "extrude",
+                "true"
+            ]
         ],
           "interactive": true
         }
