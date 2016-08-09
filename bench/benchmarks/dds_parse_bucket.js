@@ -65,9 +65,7 @@ function runTile (assets, coordinate, callback) {
     assets.getTile(url, function(err, response) {
         if (err) throw err;
         var data = new VT.VectorTile(new Protobuf(new Uint8Array(response)));
-        console.time(url);
         workerTile.parse(data, assets.layerFamilies, actor, null, function(err) {
-            console.timeEnd(url);
             if (err) return callback(err);
             callback();
         });
