@@ -672,7 +672,7 @@ Style.prototype = util.inherit(Evented, {
 
     addSourceType: function (name, SourceType, callback) {
         if (Source.getType(name)) {
-            return callback(new Error('A source type called "' + name + '" already exists.'));
+            return callback(null, null);
         }
 
         Source.setType(name, SourceType);
