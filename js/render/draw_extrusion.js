@@ -181,7 +181,7 @@ function drawExtrusion(painter, source, layer, coord) {
     var shadowColor = layer.paint['extrusion-shadow-color'] || [0,0,1,1];
     shadowColor[3] = 1;
     var image = layer.paint['extrusion-pattern'];
-    var rotateLight = map._lightingAnchor === 'viewport';
+    var rotateLight = map._lightingAnchor === 'viewport'; // Should not be hard-coded
 
     var programOptions = bucket.paintAttributes.extrusion[layer.id];
     var program = painter.useProgram(
@@ -227,7 +227,7 @@ function drawExtrusion(painter, source, layer, coord) {
 
     gl.uniform4fv(program.u_shadow, shadowColor);
 
-    var lightdir = [0.2, -0.5, 1.0];
+    var lightdir = [-0.5, -0.3, 1.0];
     // NZD's notes:
     // each object has its own light source
     // coordinates are relative to each object, not a global scene
@@ -252,7 +252,7 @@ function drawExtrusion(painter, source, layer, coord) {
     vec3.transformMat3(lightdir, lightdir, lightMat);
     gl.uniform3fv(program.u_lightdir, lightdir);
 
-    var lightColor = [1.0, 1.0, 1.0, 0.5];
+    var lightColor = [1.0, 1.0, 1.0, 0.75];
     gl.uniform4fv(program.u_lightcolor, lightColor);
 
     bucket.setUniforms(gl, 'extrusion', program, layer, {zoom: painter.transform.zoom});

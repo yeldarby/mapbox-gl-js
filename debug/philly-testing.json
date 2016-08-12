@@ -17,7 +17,7 @@
     },
     "sprite": "mapbox://sprites/nicki/ciq47bi09000vb4kx1l6lfl9v",
     "glyphs": "mapbox://fonts/nicki/{fontstack}/{range}.pbf",
-    "lighting-anchor": "map",
+    "lighting-anchor": "viewport",
     "layers": [
         {
             "id": "background",
@@ -358,7 +358,7 @@
           "source": "composite",
           "id": "buildingtada",
           "paint": {
-            "extrusion-color": "rgb(255, 100, 100)",
+            "extrusion-color": "#929292",
             "extrusion-opacity": 1.0,
             "extrusion-layer-opacity": 1.0,
             "extrusion-antialias": false,
