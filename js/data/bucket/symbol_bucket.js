@@ -566,7 +566,7 @@ SymbolBucket.prototype.addSymbolInstance = function(anchor, line, shapedText, sh
 
     var glyphQuadStartIndex, glyphQuadEndIndex, iconQuadStartIndex, iconQuadEndIndex, textCollisionFeature, iconCollisionFeature, glyphQuads, iconQuads;
     if (shapedText) {
-        glyphQuads = addToBuffers ? getGlyphQuads(anchor, shapedText, textBoxScale, line, layer, textAlongLine) : [];
+        glyphQuads = addToBuffers ? getGlyphQuads(anchor, shapedText, textBoxScale, line, layer, textAlongLine, globalProperties, featureProperties) : [];
         textCollisionFeature = new CollisionFeature(collisionBoxArray, line, anchor, featureIndex, sourceLayerIndex, bucketIndex, shapedText, textBoxScale, textPadding, textAlongLine, false);
     }
 

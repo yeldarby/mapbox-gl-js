@@ -134,9 +134,9 @@ function getIconQuads(anchor, shapedIcon, boxScale, line, layer, alongLine, shap
  * @returns {Array<SymbolQuad>}
  * @private
  */
-function getGlyphQuads(anchor, shaping, boxScale, line, layer, alongLine) {
+function getGlyphQuads(anchor, shaping, boxScale, line, layer, alongLine, globalProperties, featureProperties) {
 
-    var textRotate = layer.layout['text-rotate'] * Math.PI / 180;
+    var textRotate = layer.getLayoutValue('text-rotate', globalProperties, featureProperties) * Math.PI / 180;
     var keepUpright = layer.layout['text-keep-upright'];
 
     var positionedGlyphs = shaping.positionedGlyphs;
