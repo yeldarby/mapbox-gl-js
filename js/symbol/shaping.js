@@ -105,10 +105,6 @@ function linewrapLong(shaping, glyphs, lineHeight, maxWidth, horizontalAlign, ve
 
     if (maxWidth) {
 
-        var wordLength = positionedGlyphs.length;
-
-        // lastSafeBreak = Math.round(wordLength/2);
-
         for (var i = 0; i < positionedGlyphs.length; i++) {
             var positionedGlyph = positionedGlyphs[i];
 
@@ -175,8 +171,6 @@ function linewrap(shaping, glyphs, lineHeight, maxWidth, horizontalAlign, vertic
     if (maxWidth) {
 
         var wordLength = positionedGlyphs.length;
-
-        // lastSafeBreak = Math.round(wordLength/2);
 
         for (var i = 0; i < positionedGlyphs.length; i++) {
             var positionedGlyph = positionedGlyphs[i];
