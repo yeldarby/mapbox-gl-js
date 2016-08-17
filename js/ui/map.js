@@ -21,6 +21,8 @@ var LngLat = require('../geo/lng_lat');
 var LngLatBounds = require('../geo/lng_lat_bounds');
 var Point = require('point-geometry');
 var Attribution = require('./control/attribution');
+var parseColor = require('../style/parse_color');
+
 
 var defaultMinZoom = 0;
 var defaultMaxZoom = 20;
@@ -30,7 +32,11 @@ var defaultOptions = {
     bearing: 0,
     pitch: 0,
 
-    'lighting-anchor': 'viewport',
+    light: {
+        lightAnchor: 'viewport',
+        lightDirection: [-0.5, -0.3, 1.0],
+        lightColor: 'rgba(1,1,1,0.75)'
+    },
 
     minZoom: defaultMinZoom,
     maxZoom: defaultMaxZoom,
@@ -140,7 +146,6 @@ var Map = module.exports = function(options) {
     this._trackResize = options.trackResize;
     this._workerCount = options.workerCount;
     this._bearingSnap = options.bearingSnap;
-    this._lightingAnchor = options['lighting-anchor'];
 
     if (typeof options.container === 'string') {
         this._container = document.getElementById(options.container);
@@ -206,6 +211,12 @@ var Map = module.exports = function(options) {
 
     if (options.classes) this.setClasses(options.classes);
     if (options.style) this.setStyle(options.style);
+
+    var _map = this;
+    this.style.on('load', function(e) {
+        _map._setLightOptions(util.extend(options.light, _map.style._light));
+    })
+
     if (options.attributionControl) this.addControl(new Attribution(options.attributionControl));
 
     var fireError = this.fire.bind(this, 'error');
@@ -431,8 +442,60 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         } else throw new Error('maxZoom must be between the current minZoom and ' + defaultMaxZoom + ', inclusive');
     },
     /**
+<<<<<<< HEAD
      * Returns a [`Point`](#Point) representing pixel coordinates, relative to the map's `container`,
      * that correspond to the specified geographical location.
+=======
+     * Set light anchor subproperty, for extrusions.
+     *
+     * @param {string} lightAnchor One of `map`, `viewport`
+     * @returns {Map} `this`
+     */
+    setLightAnchor: function(lightAnchor) {
+        if (lightAnchor === 'map' || lightAnchor === 'viewport') {
+            this._light.lightAnchor = lightAnchor;
+        } else throw new Error('light.lightAnchor must be one of: `map`, `viewport`');
+    },
+    /**
+     * Set light direction property, for extrusions.
+     *
+     * @param {Array<number>} lightDirection [] ## TODO document units
+     * @returns {Map} `this`
+     */
+    setLightDirection: function(lightDirection) {
+        if (Array.isArray(lightDirection) && lightDirection.length === 3 &&
+            lightDirection.every(function(i) { return typeof i === 'number'; })) {
+            this._light.lightDirection = lightDirection;
+        } else throw new Error('light.lightDirection must be an array of three numbers');
+        // TODO should we do more specific bounds checking on these numbers? probably
+    },
+    /**
+     * Set light color property, for extrusions.
+     *
+     * @param {Color} lightColor Color to use to shade extrusions.
+     * @returns {Map} `this`
+     */
+    setLightColor: function(lightColor) {
+        var color = parseColor(lightColor);
+        this._light.lightColor = color;
+    },
+    /**
+     * Set all light properties.
+     *
+     * @param {Object} lightOptions Object containing any light subproperties.
+     * @returns {Map} `this`
+     */
+    _setLightOptions: function(lightOptions) {
+        if (!this._light) this._light = {};
+        if (lightOptions.lightAnchor) this.setLightAnchor(lightOptions.lightAnchor);
+        if (lightOptions.lightDirection) this.setLightDirection(lightOptions.lightDirection);
+        if (lightOptions.lightColor) this.setLightColor(lightOptions.lightColor);
+        return this;
+    },
+    /**
+     * Get pixel coordinates relative to the map container, given a geographical
+     * location.
+>>>>>>> * Remove DDS outline_color, but make outline_color default to color if unspecified (even if color is DDS)
      *
      * @param {LngLatLike} lnglat The geographical location to project.
      * @returns {Point} The [`Point`](#Point) corresponding to `lnglat`, relative to the map's `container`.
