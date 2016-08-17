@@ -213,9 +213,9 @@ var Map = module.exports = function(options) {
     if (options.style) this.setStyle(options.style);
 
     var _map = this;
-    this.style.on('load', function(e) {
+    this.style.on('load', function() {
         _map._setLightOptions(util.extend(options.light, _map.style._light));
-    })
+    });
 
     if (options.attributionControl) this.addControl(new Attribution(options.attributionControl));
 
@@ -442,63 +442,37 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         } else throw new Error('maxZoom must be between the current minZoom and ' + defaultMaxZoom + ', inclusive');
     },
     /**
-<<<<<<< HEAD
-     * Returns a [`Point`](#Point) representing pixel coordinates, relative to the map's `container`,
-     * that correspond to the specified geographical location.
-=======
-     * Set light anchor subproperty, for extrusions.
-     *
-     * @param {string} lightAnchor One of `map`, `viewport`
-     * @returns {Map} `this`
-     */
-    setLightAnchor: function(lightAnchor) {
-        if (lightAnchor === 'map' || lightAnchor === 'viewport') {
-            this._light.lightAnchor = lightAnchor;
-        } else throw new Error('light.lightAnchor must be one of: `map`, `viewport`');
-    },
-    /**
-     * Set light direction property, for extrusions.
-     *
-     * @param {Array<number>} lightDirection [] ## TODO document units
-     * @returns {Map} `this`
-     */
-    setLightDirection: function(lightDirection) {
-        this._light.lightDirection = {};
-        if (Array.isArray(lightDirection) && lightDirection.length === 3 &&
-            lightDirection.every(function(i) { return typeof i === 'number'; })) {
-            this._light.lightDirection.x = lightDirection[0];
-            this._light.lightDirection.y = lightDirection[1];
-            this._light.lightDirection.z = lightDirection[2];
-        } else throw new Error('light.lightDirection must be an array of three numbers');
-        // TODO should we do more specific bounds checking on these numbers? probably
-    },
-    /**
-     * Set light color property, for extrusions.
-     *
-     * @param {Color} lightColor Color to use to shade extrusions.
-     * @returns {Map} `this`
-     */
-    setLightColor: function(lightColor) {
-        var color = parseColor(lightColor);
-        this._light.lightColor = color;
-    },
-    /**
      * Set all light properties.
      *
      * @param {Object} lightOptions Object containing any light subproperties.
      * @returns {Map} `this`
      */
-    _setLightOptions: function(lightOptions) {
-        if (!this._light) this._light = {};
-        if (lightOptions.lightAnchor) this.setLightAnchor(lightOptions.lightAnchor);
-        if (lightOptions.lightDirection) this.setLightDirection(lightOptions.lightDirection);
-        if (lightOptions.lightColor) this.setLightColor(lightOptions.lightColor);
+    _setLightOptions: function(opts) {
+        var lightOptions = {};
+
+        if (opts.lightAnchor === 'map' || opts.lightAnchor === 'viewport') {
+            lightOptions.lightAnchor = opts.lightAnchor;
+        } else throw new Error('light.lightAnchor must be one of: `map`, `viewport`');
+
+        lightOptions.lightDirection = {};
+        if (Array.isArray(opts.lightDirection) && opts.lightDirection.length === 3 &&
+            opts.lightDirection.every(function(i) { return typeof i === 'number'; })) {
+            lightOptions.lightDirection = opts.lightDirection;
+            lightOptions.lightDirection.x = opts.lightDirection[0];
+            lightOptions.lightDirection.y = opts.lightDirection[1];
+            lightOptions.lightDirection.z = opts.lightDirection[2];
+        } else throw new Error('light.lightDirection must be an array of three numbers');
+        // TODO should we do more specific bounds checking on these numbers? probably
+
+        var color = parseColor(opts.lightColor);
+        lightOptions.lightColor = color;
+
+        this.painter.setLighting(lightOptions);
         return this;
     },
     /**
-     * Get pixel coordinates relative to the map container, given a geographical
-     * location.
->>>>>>> * Remove DDS outline_color, but make outline_color default to color if unspecified (even if color is DDS)
+     * Returns a [`Point`](#Point) representing pixel coordinates, relative to the map's `container`,
+     * that correspond to the specified geographical location.
      *
      * @param {LngLatLike} lnglat The geographical location to project.
      * @returns {Point} The [`Point`](#Point) corresponding to `lnglat`, relative to the map's `container`.
