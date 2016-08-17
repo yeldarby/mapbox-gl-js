@@ -463,9 +463,12 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
      * @returns {Map} `this`
      */
     setLightDirection: function(lightDirection) {
+        this._light.lightDirection = {};
         if (Array.isArray(lightDirection) && lightDirection.length === 3 &&
             lightDirection.every(function(i) { return typeof i === 'number'; })) {
-            this._light.lightDirection = lightDirection;
+            this._light.lightDirection.x = lightDirection[0];
+            this._light.lightDirection.y = lightDirection[1];
+            this._light.lightDirection.z = lightDirection[2];
         } else throw new Error('light.lightDirection must be an array of three numbers');
         // TODO should we do more specific bounds checking on these numbers? probably
     },
