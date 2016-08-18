@@ -97,6 +97,15 @@ LineBucket.prototype.programInterfaces = {
             },
             multiplier: 10,
             paintProperty: 'line-blur'
+        }, {
+            name: 'a_opacity',
+            components: 1,
+            type: 'Uint8',
+            getValue: function(layer, globalProperties, featureProperties) {
+                return [layer.getPaintValue("line-opacity", globalProperties, featureProperties)];
+            },
+            multiplier: 10,
+            paintProperty: 'line-opacity'
         }],
         elementArrayType: new Bucket.ElementArrayType()
     }
