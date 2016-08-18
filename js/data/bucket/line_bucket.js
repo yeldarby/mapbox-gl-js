@@ -88,6 +88,15 @@ LineBucket.prototype.programInterfaces = {
             },
             multiplier: 255,
             paintProperty: 'line-color'
+        }, {
+            name: 'a_blur',
+            components: 1,
+            type: 'Uint8',
+            getValue: function(layer, globalProperties, featureProperties) {
+                return [layer.getPaintValue("line-blur", globalProperties, featureProperties)];
+            },
+            multiplier: 10,
+            paintProperty: 'line-blur'
         }],
         elementArrayType: new Bucket.ElementArrayType()
     }

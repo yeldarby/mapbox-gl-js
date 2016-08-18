@@ -46,7 +46,6 @@ function drawLineTile(painter, source, layer, coord) {
     // Retina devices need a smaller distance to avoid aliasing.
     var antialiasing = 1 / browser.devicePixelRatio;
 
-    var blur = layer.paint['line-blur'] + antialiasing;
     var color = layer.paint['line-color'];
 
     var tr = painter.transform;
@@ -76,7 +75,6 @@ function drawLineTile(painter, source, layer, coord) {
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
         gl.uniform1f(program.u_antialiasing, antialiasing / 2);
-        gl.uniform1f(program.u_blur, blur);
         gl.uniform4fv(program.u_color, color);
         gl.uniform1f(program.u_opacity, layer.paint['line-opacity']);
 
@@ -113,7 +111,6 @@ function drawLineTile(painter, source, layer, coord) {
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
         gl.uniform1f(program.u_antialiasing, antialiasing / 2);
-        gl.uniform1f(program.u_blur, blur);
         gl.uniform2fv(program.u_pattern_tl_a, imagePosA.tl);
         gl.uniform2fv(program.u_pattern_br_a, imagePosA.br);
         gl.uniform2fv(program.u_pattern_tl_b, imagePosB.tl);
@@ -135,7 +132,6 @@ function drawLineTile(painter, source, layer, coord) {
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
         gl.uniform1f(program.u_antialiasing, antialiasing / 2);
-        gl.uniform1f(program.u_blur, blur);
         gl.uniform1f(program.u_extra, extra);
         gl.uniform1f(program.u_offset, -layer.paint['line-offset']);
         gl.uniformMatrix2fv(program.u_antialiasingmatrix, false, antialiasingMatrix);

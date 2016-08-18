@@ -2,6 +2,7 @@
 
 var assert = require('assert');
 var util = require('../../util/util');
+var browser = require('../../util/browser');
 var shaders = require('mapbox-gl-shaders');
 
 var utilSource = shaders.util;
@@ -11,7 +12,7 @@ module.exports._createProgram = function(name, defines, vertexPragmas, fragmentP
     var program = gl.createProgram();
     var definition = shaders[name];
 
-    var definesSource = '#define MAPBOX_GL_JS;\n';
+    var definesSource = '#define MAPBOX_GL_JS\n#define DEVICE_PIXEL_RATIO ' + browser.devicePixelRatio.toFixed(1) + '\n';
     for (var j = 0; j < defines.length; j++) {
         definesSource += '#define ' + defines[j] + ';\n';
     }
