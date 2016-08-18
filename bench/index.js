@@ -1,13 +1,9 @@
 'use strict';
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "BenchmarksView|clipboard" }]*/
 
-var React = require('react');
-var ReactDOM = require('react-dom');
 var util = require('../js/util/util');
-var async = require('async');
 var mapboxgl = require('../js/mapbox-gl');
 var Clipboard = require('clipboard');
-var URL = require('url');
 
 var BenchmarksView = React.createClass({
 
@@ -116,15 +112,16 @@ var BenchmarksView = React.createClass({
 
     componentDidMount: function() {
         var that = this;
-        setTimeout(function() {
-            async.eachSeries(
-                Object.keys(that.props.benchmarks),
-                that.runBenchmark,
-                function() {
-                    that.setState({state: 'ended'});
-                    that.scrollToBenchmark(Object.keys(that.props.benchmarks)[0]);
-                }
-            );
+        var benchmarks = Object.keys(that.props.benchmarks);
+
+        setTimeout(function next() {
+            var bench = benchmarks.shift();
+            if (!bench) return;
+            that.scrollToBenchmark(bench);
+            that.runBenchmark(bench, function () {
+                that.setState({state: 'ended'});
+                next();
+            });
         }, 500);
     },
 
@@ -208,7 +205,7 @@ var benchmarks = {
 };
 
 var filteredBenchmarks = {};
-var benchmarkName = URL.parse(window.location.toString()).pathname.split('/')[2];
+var benchmarkName = window.location.hash.substr(1);
 if (!benchmarkName) {
     filteredBenchmarks = benchmarks;
 } else {
