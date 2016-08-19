@@ -20,14 +20,10 @@ npm run build-min
 npm run build-dev
 
 # run unit tests
-tap --reporter dot --coverage --no-coverage-report test/js/*/*.js test/build/webpack.test.js
+tap --reporter dot --no-coverage test/js/*/*.js test/build/webpack.test.js
 
-# run render tests
-istanbul cover --dir .nyc_output --include-pid --report none --print none test/render.test.js &&
-istanbul cover --dir .nyc_output --include-pid --report none --print none test/query.test.js
-
-# send coverage report to coveralls
-nyc report --reporter=lcov
-(node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info) || true
+# run render/query tests
+node test/render.test.js
+node test/query.test.js
 
 exit $EXIT_CODE
