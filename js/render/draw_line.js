@@ -46,8 +46,6 @@ function drawLineTile(painter, source, layer, coord) {
     // Retina devices need a smaller distance to avoid aliasing.
     var antialiasing = 1 / browser.devicePixelRatio;
 
-    var color = layer.paint['line-color'];
-
     var tr = painter.transform;
 
     var antialiasingMatrix = mat2.create();
