@@ -42,10 +42,6 @@ function drawLineTile(painter, source, layer, coord) {
 
     var programOptions = bucket.paintAttributes.line[layer.id];
 
-    // the distance over which the line edge fades out.
-    // Retina devices need a smaller distance to avoid aliasing.
-    var antialiasing = 1 / browser.devicePixelRatio;
-
     var tr = painter.transform;
 
     var antialiasingMatrix = mat2.create();
@@ -72,7 +68,6 @@ function drawLineTile(painter, source, layer, coord) {
 
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
-        gl.uniform1f(program.u_antialiasing, antialiasing / 2);
 
         posA = painter.lineAtlas.getDash(dasharray.from, layer.layout['line-cap'] === 'round');
         posB = painter.lineAtlas.getDash(dasharray.to, layer.layout['line-cap'] === 'round');
@@ -106,7 +101,6 @@ function drawLineTile(painter, source, layer, coord) {
 
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
-        gl.uniform1f(program.u_antialiasing, antialiasing / 2);
         gl.uniform2fv(program.u_pattern_tl_a, imagePosA.tl);
         gl.uniform2fv(program.u_pattern_br_a, imagePosA.br);
         gl.uniform2fv(program.u_pattern_tl_b, imagePosB.tl);
@@ -126,7 +120,6 @@ function drawLineTile(painter, source, layer, coord) {
 
         gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
         gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
-        gl.uniform1f(program.u_antialiasing, antialiasing / 2);
         gl.uniform1f(program.u_extra, extra);
         gl.uniform1f(program.u_offset, -layer.paint['line-offset']);
         gl.uniformMatrix2fv(program.u_antialiasingmatrix, false, antialiasingMatrix);
