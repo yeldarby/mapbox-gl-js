@@ -20,13 +20,13 @@ module.exports._createProgram = function(name, defines, vertexPragmas, fragmentP
     var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, applyPragmas(definesSource + definition.fragmentSource, fragmentPragmas));
     gl.compileShader(fragmentShader);
-    assert(gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS), gl.getShaderInfoLog(fragmentShader));
+    assert(gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS), name + '.fragment.glsl error:\n' + gl.getShaderInfoLog(fragmentShader));
     gl.attachShader(program, fragmentShader);
 
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, applyPragmas(definesSource + utilSource + definition.vertexSource, vertexPragmas));
     gl.compileShader(vertexShader);
-    assert(gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS), gl.getShaderInfoLog(vertexShader));
+    assert(gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS), name + '.vertex.glsl error:\n' + gl.getShaderInfoLog(vertexShader));
     gl.attachShader(program, vertexShader);
 
     gl.linkProgram(program);
