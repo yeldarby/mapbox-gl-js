@@ -66,9 +66,6 @@ function drawLineTile(painter, source, layer, coord) {
             programOptions.fragmentPragmas
         );
 
-        gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
-        gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
-
         posA = painter.lineAtlas.getDash(dasharray.from, layer.layout['line-cap'] === 'round');
         posB = painter.lineAtlas.getDash(dasharray.to, layer.layout['line-cap'] === 'round');
 
@@ -80,7 +77,6 @@ function drawLineTile(painter, source, layer, coord) {
         gl.uniform1f(program.u_tex_y_b, posB.y);
         gl.uniform1f(program.u_mix, dasharray.t);
         gl.uniform1f(program.u_extra, extra);
-        gl.uniform1f(program.u_offset, -layer.paint['line-offset']);
         gl.uniformMatrix2fv(program.u_antialiasingmatrix, false, antialiasingMatrix);
 
     } else if (image) {
@@ -99,15 +95,12 @@ function drawLineTile(painter, source, layer, coord) {
         gl.activeTexture(gl.TEXTURE0);
         painter.spriteAtlas.bind(gl, true);
 
-        gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
-        gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
         gl.uniform2fv(program.u_pattern_tl_a, imagePosA.tl);
         gl.uniform2fv(program.u_pattern_br_a, imagePosA.br);
         gl.uniform2fv(program.u_pattern_tl_b, imagePosB.tl);
         gl.uniform2fv(program.u_pattern_br_b, imagePosB.br);
         gl.uniform1f(program.u_fade, image.t);
         gl.uniform1f(program.u_extra, extra);
-        gl.uniform1f(program.u_offset, -layer.paint['line-offset']);
         gl.uniformMatrix2fv(program.u_antialiasingmatrix, false, antialiasingMatrix);
 
     } else {
@@ -118,10 +111,7 @@ function drawLineTile(painter, source, layer, coord) {
             programOptions.fragmentPragmas
         );
 
-        gl.uniform1f(program.u_linewidth, layer.paint['line-width'] / 2);
-        gl.uniform1f(program.u_gapwidth, layer.paint['line-gap-width'] / 2);
         gl.uniform1f(program.u_extra, extra);
-        gl.uniform1f(program.u_offset, -layer.paint['line-offset']);
         gl.uniformMatrix2fv(program.u_antialiasingmatrix, false, antialiasingMatrix);
     }
 
