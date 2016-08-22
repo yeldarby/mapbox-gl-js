@@ -442,32 +442,65 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         } else throw new Error('maxZoom must be between the current minZoom and ' + defaultMaxZoom + ', inclusive');
     },
     /**
+     * Set light color (for use in extrusions).
+     *
+     * @param {Color} lightColor Color with which to light extrusions.
+     * @returns {Map} `this`
+     */
+    setLightColor: function(lightColor) {
+        this.painter.setLighting({
+            lightColor: parseColor(lightColor)
+        });
+
+        return this;
+    },
+    /**
+     * Set light color (for use in extrusions).
+     *
+     * @param {Array<number>} lightDirection Array of three values representing light direction x,y,z.
+     * @returns {Map} `this`
+     */
+    setLightDirection: function(lightDirection) {
+        if (Array.isArray(lightDirection) && lightDirection.length === 3 &&
+            lightDirection.every(function(i) { return typeof i === 'number'; })) {
+            this.painter.setLighting({
+                lightDirection: {
+                    x: lightDirection[0],
+                    y: lightDirection[1],
+                    z: lightDirection[2]
+                }
+            });
+        } else throw new Error('light.lightDirection must be an array of three numbers');
+        // TODO should we do more specific bounds checking on these numbers? probably
+
+        return this;
+    },
+    /**
+     * Set light color (for use in extrusions).
+     *
+     * @param {String} lightAnchor Anchor for extrusion lighting. One of `map`, `viewport`.
+     * @returns {Map} `this`
+     */
+    setLightAnchor: function(lightAnchor) {
+        if (lightAnchor === 'map' || lightAnchor === 'viewport') {
+            this.painter.setLighting({
+                lightAnchor: lightAnchor
+            });
+        } else throw new Error('light.lightAnchor must be one of: `map`, `viewport`');
+
+        return this;
+    },
+    /**
      * Set all light properties.
      *
      * @param {Object} lightOptions Object containing any light subproperties.
      * @returns {Map} `this`
      */
     _setLightOptions: function(opts) {
-        var lightOptions = {};
+        this.setLightAnchor(opts.lightAnchor);
+        this.setLightColor(opts.lightColor);
+        this.setLightDirection(opts.lightDirection);
 
-        if (opts.lightAnchor === 'map' || opts.lightAnchor === 'viewport') {
-            lightOptions.lightAnchor = opts.lightAnchor;
-        } else throw new Error('light.lightAnchor must be one of: `map`, `viewport`');
-
-        lightOptions.lightDirection = {};
-        if (Array.isArray(opts.lightDirection) && opts.lightDirection.length === 3 &&
-            opts.lightDirection.every(function(i) { return typeof i === 'number'; })) {
-            lightOptions.lightDirection = opts.lightDirection;
-            lightOptions.lightDirection.x = opts.lightDirection[0];
-            lightOptions.lightDirection.y = opts.lightDirection[1];
-            lightOptions.lightDirection.z = opts.lightDirection[2];
-        } else throw new Error('light.lightDirection must be an array of three numbers');
-        // TODO should we do more specific bounds checking on these numbers? probably
-
-        var color = parseColor(opts.lightColor);
-        lightOptions.lightColor = color;
-
-        this.painter.setLighting(lightOptions);
         return this;
     },
     /**
