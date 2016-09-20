@@ -174,6 +174,6 @@ Marker.prototype = {
         t += ' scale(' + scale + ',' + scale + ')';
 
         DOM.setTransform(this._element, t);
-        this._el.style.zIndex = z;
+        this._element.style.zIndex = z;
     }
 };
