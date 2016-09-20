@@ -75,7 +75,46 @@ test('Style', function(t) {
         });
     });
 
-    t.test('throws on non-existant vector source layer', function(t) {
+    t.test('validates the style by default', function(t) {
+        var style = new Style(createStyleJSON({version: 'invalid'}));
+
+        style.on('error', function(event) {
+            t.ok(event.error);
+            t.match(event.error.message, /version/);
+            t.end();
+        });
+    });
+
+    t.test('skips validation for mapbox:// styles', function(t) {
+        var Style = proxyquire('../../../js/style/style', {
+            '../util/mapbox': {
+                isMapboxURL: function(url) {
+                    t.equal(url, 'mapbox://styles/test/test');
+                    return true;
+                },
+                normalizeStyleURL: function(url) {
+                    t.equal(url, 'mapbox://styles/test/test');
+                    return url;
+                }
+            }
+        });
+
+        window.useFakeXMLHttpRequest();
+
+        new Style('mapbox://styles/test/test')
+            .on('error', function() {
+                t.fail();
+            })
+            .on('load', function() {
+                window.restore();
+                t.end();
+            });
+
+        window.server.respondWith('mapbox://styles/test/test', JSON.stringify(createStyleJSON({version: 'invalid'})));
+        window.server.respond();
+    });
+
+    t.test('emits an error on non-existant vector source layer', function(t) {
         var style = new Style(createStyleJSON({
             sources: {
                 '-source-id-': { type: "vector", tiles: [] }
@@ -1093,6 +1132,16 @@ test('Style#queryRenderedFeatures', function(t) {
             t.end();
         });
 
+        t.test('fires an error if layer included in params does not exist on the style', function(t) {
+            var errors = 0;
+            sinon.stub(style, 'fire', function(type, data) {
+                if (data.error && data.error.includes('does not exist in the map\'s style and cannot be queried for features.')) errors++;
+            });
+            style.queryRenderedFeatures([{column: 1, row: 1, zoom: 1}], {layers:['merp']});
+            t.equals(errors, 1);
+            t.end();
+        });
+
         t.end();
     });
 });
@@ -1153,8 +1202,11 @@ test('Style#query*Features', function(t) {
     // These tests only cover filter validation. Most tests for these methods
     // live in mapbox-gl-test-suite.
 
-    function createStyle() {
-        return new Style({
+    var style;
+    var onError;
+
+    t.beforeEach(function (callback) {
+        style = new Style({
             "version": 8,
             "sources": {
                 "geojson": createGeoJSONSource()
@@ -1168,26 +1220,25 @@ test('Style#query*Features', function(t) {
                 "ref": "symbol"
             }]
         });
-    }
+
+        onError = sinon.spy();
+
+        style.on('error', onError)
+            .on('load', function() {
+                callback();
+            });
+    });
 
     t.test('querySourceFeatures emits an error on incorrect filter', function(t) {
-        var style = createStyle();
-        style.on('load', function() {
-            t.throws(function() {
-                t.deepEqual(style.querySourceFeatures([10, 100], {filter: 7}), []);
-            }, /querySourceFeatures\.filter/);
-            t.end();
-        });
+        t.deepEqual(style.querySourceFeatures([10, 100], {filter: 7}), []);
+        t.match(onError.args[0][0].error.message, /querySourceFeatures\.filter/);
+        t.end();
     });
 
     t.test('queryRenderedFeatures emits an error on incorrect filter', function(t) {
-        var style = createStyle();
-        style.on('load', function() {
-            t.throws(function() {
-                t.deepEqual(style.queryRenderedFeatures([10, 100], {filter: 7}), []);
-            }, /queryRenderedFeatures\.filter/);
-            t.end();
-        });
+        t.deepEqual(style.queryRenderedFeatures([10, 100], {filter: 7}), []);
+        t.match(onError.args[0][0].error.message, /queryRenderedFeatures\.filter/);
+        t.end();
     });
 
     t.end();
